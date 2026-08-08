@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kuya ZANE's 7th Birthday | Ninja Celebration</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Shojumaru&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-dark: #0a0c10;
+            --card-bg: rgba(22, 27, 34, 0.65);
+            --border-glow: rgba(255, 102, 0, 0.3);
+            --accent-orange: #ff6600;
+            --accent-gold: #ffb703;
+            --text-light: #f0f6fc;
+            --text-muted: #8b949e;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            background-image:
+                radial-gradient(circle at 10% 20%, rgba(255, 102, 0, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(255, 183, 3, 0.05) 0%, transparent 40%);
+        }
+
+        /* --- SCREEN 1: TAP TO START (Browser Audio Requirement) --- */
+        #start-screen {
+            position: fixed;
+            inset: 0;
+            z-index: 50;
+            background-color: var(--bg-dark);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            transition: opacity 0.6s ease, visibility 0.6s ease;
+        }
+
+        .symbol-icon {
+            width: 70px;
+            height: 70px;
+            fill: var(--accent-orange);
+            filter: drop-shadow(0 0 12px rgba(255, 102, 0, 0.6));
+            animation: pulse 2s infinite ease-in-out;
+        }
+
+        .start-btn {
+            background: linear-gradient(135deg, #ff6600, #d94e00);
+            color: #fff;
+            border: none;
+            padding: 16px 36px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 0 20px rgba(255, 102, 0, 0.4);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            text-transform: uppercase;
+        }
+
+        .start-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(255, 102, 0, 0.7);
+        }
+
+        /* --- SCREEN 2: VIDEO CONTAINER --- */
+        #video-container {
+            position: fixed;
+            inset: 0;
+            z-index: 40;
+            background: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.6s ease, visibility 0.6s ease;
+        }
+
+        #video-container.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        video {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .skip-btn {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            background: rgba(0, 0, 0, 0.6);
+            color: var(--text-light);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            backdrop-filter: blur(8px);
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            z-index: 45;
+        }
+
+        .skip-btn:hover {
+            background: var(--accent-orange);
+            border-color: var(--accent-orange);
+        }
+
+        /* --- SCREEN 3: INVITATION CONTENT --- */
+        #invitation-container {
+            width: 100%;
+            max-width: 1100px;
+            padding: 40px 20px;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        #invitation-container.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .sub-title {
+            color: var(--accent-orange);
+            font-size: 0.95rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .main-title {
+            font-family: 'Shojumaru', cursive, sans-serif;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            color: #ffffff;
+            text-shadow: 0 0 15px rgba(255, 102, 0, 0.4);
+            letter-spacing: 2px;
+            margin-bottom: 12px;
+        }
+
+        .hero-name {
+            color: var(--accent-orange);
+            display: inline-block;
+        }
+
+        .header-divider {
+            height: 3px;
+            width: 80px;
+            background: linear-gradient(90deg, transparent, var(--accent-orange), transparent);
+            margin: 0 auto;
+        }
+
+        /* Cards Grid */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 24px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-glow);
+            border-radius: 16px;
+            padding: 24px;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-orange), var(--accent-gold));
+            opacity: 0.7;
+        }
+
+        .card:hover {
+            transform: translateY(-6px);
+            border-color: var(--accent-orange);
+            box-shadow: 0 15px 35px rgba(255, 102, 0, 0.15);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .card-number {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--accent-orange);
+            line-height: 1;
+        }
+
+        .card-title-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            color: #fff;
+            text-transform: uppercase;
+        }
+
+        .card-subtitle {
+            font-size: 0.8rem;
+            color: var(--accent-gold);
+            font-weight: 400;
+            margin-top: 2px;
+        }
+
+        .names-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .names-list li {
+            font-size: 0.95rem;
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            opacity: 0.9;
+        }
+
+        .names-list li::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            background-color: var(--accent-orange);
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        /* Animations */
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.08); opacity: 1; }
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            #invitation-container {
+                padding: 30px 16px;
+            }
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 1. START OVERLAY (Enables Audio Playback) -->
+    <div id="start-screen">
+        <svg class="symbol-icon" viewBox="0 0 100 100">
+            <path d="M50,10 A40,40 0 1,0 90,50 A40,40 0 0,0 50,10 Z M50,25 A25,25 0 1,1 25,50 A25,25 0 0,1 50,25 Z M50,35 A15,15 0 1,0 65,50 A15,15 0 0,0 50,35 Z" />
+        </svg>
+        <button class="start-btn" onclick="startExperience()">Open Scroll</button>
+    </div>
+
+    <!-- 2. VIDEO PLAYER -->
+    <div id="video-container">
+        <button class="skip-btn" onclick="showInvitation()">Skip Intro ➔</button>
+        <video id="intro-video" src="video.mp4" playsinline></video>
+    </div>
+
+    <!-- 3. MAIN INVITATION CONTENT -->
+    <div id="invitation-container">
+        <header class="header">
+            <div class="sub-title">You Are Invited To</div>
+            <h1 class="main-title">7th Birthday <span class="hero-name">Kuya ZANE</span></h1>
+            <div class="header-divider"></div>
+        </header>
+
+        <main class="grid">
+
+            <!-- Category 1: 7 BLUE BILLS -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-number">7</span>
+                    <div class="card-title-group">
+                        <span class="card-title">Blue Bills</span>
+                    </div>
+                </div>
+                <ul class="names-list">
+                    <li>Tita Babylyn</li>
+                    <li>Lolo Fidel</li>
+                    <li>Lolo Odie</li>
+                    <li>Ninong Ryan</li>
+                    <li>Ninong Mark Angelo</li>
+                    <li>Tita Jhen</li>
+                    <li>Tito Neil</li>
+                </ul>
+            </div>
+
+            <!-- Category 2: 7 POLO/SHIRT -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-number">7</span>
+                    <div class="card-title-group">
+                        <span class="card-title">Polo / Shirt</span>
+                        <span class="card-subtitle">Size: 14 - 16</span>
+                    </div>
+                </div>
+                <ul class="names-list">
+                    <li>Ninang Ellaine</li>
+                    <li>Tita Joyce</li>
+                    <li>Tita Whellen</li>
+                    <li>Tita Michelle</li>
+                    <li>Tita Jewel</li>
+                    <li>Ate Ninay</li>
+                    <li>Lola Elsa</li>
+                </ul>
+            </div>
+
+            <!-- Category 3: 7 SANDALS/SHOES -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-number">7</span>
+                    <div class="card-title-group">
+                        <span class="card-title">Sandals / Shoes</span>
+                    </div>
+                </div>
+                <ul class="names-list">
+                    <li>Ninong Vincent</li>
+                    <li>Tita Dhalia</li>
+                    <li>Ate Claire</li>
+                    <li>Marcus</li>
+                    <li>Ninang Kakay</li>
+                    <li>Lola Coring</li>
+                    <li>Lola Jannet</li>
+                </ul>
+            </div>
+
+            <!-- Category 4: 7 CHOCOLATE -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-number">7</span>
+                    <div class="card-title-group">
+                        <span class="card-title">Chocolates</span>
+                    </div>
+                </div>
+                <ul class="names-list">
+                    <li>Ate Sophia</li>
+                    <li>Jillian Therese</li>
+                    <li>Aullie Maritonie</li>
+                    <li>Kuya Lucas</li>
+                    <li>Kuya Stephen</li>
+                    <li>Kuya Xian Matthew</li>
+                    <li>Uanne</li>
+                </ul>
+            </div>
+
+        </main>
+    </div>
+
+    <script>
+        const startScreen = document.getElementById('start-screen');
+        const videoContainer = document.getElementById('video-container');
+        const video = document.getElementById('intro-video');
+        const invitationContainer = document.getElementById('invitation-container');
+
+        function startExperience() {
+            // Hide initial start button screen
+            startScreen.style.opacity = '0';
+            startScreen.style.visibility = 'hidden';
+
+            // Show video container and trigger playback with sound
+            videoContainer.classList.add('active');
+            video.currentTime = 0;
+
+            video.play().catch(error => {
+                console.log("Autoplay was prevented:", error);
+                // Fallback directly to invitation if video fails to load/play
+                showInvitation();
+            });
+        }
+
+        // When video ends automatically
+        video.addEventListener('ended', function() {
+            showInvitation();
+        });
+
+        function showInvitation() {
+            // Pause video if skipping
+            video.pause();
+
+            // Fade out video
+            videoContainer.classList.remove('active');
+
+            // Fade in invitation after brief delay for smooth transition
+            setTimeout(() => {
+                invitationContainer.classList.add('visible');
+            }, 300);
+        }
+    </script>
+</body>
+</html>
