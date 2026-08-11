@@ -1,445 +1,545 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kuya ZANE's 7th Birthday | Ninja Celebration</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zane Ethan is Turning 7! | Madagascar Birthday Party</title>
 
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Shojumaru&display=swap" rel="stylesheet">
+  <!-- Google Fonts for Madagascar Theme -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Luckiest+Guy&display=swap" rel="stylesheet">
 
-    <style>
-        :root {
-            --bg-dark: #0a0c10;
-            --card-bg: rgba(22, 27, 34, 0.65);
-            --border-glow: rgba(255, 102, 0, 0.3);
-            --accent-orange: #ff6600;
-            --accent-gold: #ffb703;
-            --text-light: #f0f6fc;
-            --text-muted: #8b949e;
-        }
+  <style>
+    :root {
+      --jungle-dark: #1b381e;
+      --jungle-mid: #2e6027;
+      --jungle-light: #4caf50;
+      --accent-yellow: #ffeb3b;
+      --accent-orange: #ff9800;
+      --accent-brown: #5d4037;
+      --card-bg: rgba(255, 255, 255, 0.93);
+    }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-        body {
-            font-family: 'Outfit', sans-serif;
-            background-color: var(--bg-dark);
-            color: var(--text-light);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow-x: hidden;
-            background-image:
-                radial-gradient(circle at 10% 20%, rgba(255, 102, 0, 0.08) 0%, transparent 40%),
-                radial-gradient(circle at 90% 80%, rgba(255, 183, 3, 0.05) 0%, transparent 40%);
-        }
+    body {
+      font-family: 'Fredoka', sans-serif;
+      background: var(--jungle-dark);
+      background-image:
+        radial-gradient(circle at 10% 20%, rgba(46, 96, 39, 0.8) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(255, 152, 0, 0.2) 0%, transparent 40%);
+      color: #333;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
 
-        /* --- SCREEN 1: TAP TO START (Browser Audio Requirement) --- */
-        #start-screen {
-            position: fixed;
-            inset: 0;
-            z-index: 50;
-            background-color: var(--bg-dark);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            gap: 20px;
-            transition: opacity 0.6s ease, visibility 0.6s ease;
-        }
+    /* --- INTRO VIDEO OVERLAY --- */
+    #video-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #000;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      transition: opacity 0.8s ease, visibility 0.8s ease;
+    }
 
-        .symbol-icon {
-            width: 70px;
-            height: 70px;
-            fill: var(--accent-orange);
-            filter: drop-shadow(0 0 12px rgba(255, 102, 0, 0.6));
-            animation: pulse 2s infinite ease-in-out;
-        }
+    #bg-video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
 
-        .start-btn {
-            background: linear-gradient(135deg, #ff6600, #d94e00);
-            color: #fff;
-            border: none;
-            padding: 16px 36px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            letter-spacing: 2px;
-            border-radius: 50px;
-            cursor: pointer;
-            box-shadow: 0 0 20px rgba(255, 102, 0, 0.4);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-            text-transform: uppercase;
-        }
+    .video-controls {
+      position: absolute;
+      bottom: 40px;
+      z-index: 10000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      width: 90%;
+      max-width: 320px;
+    }
 
-        .start-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 30px rgba(255, 102, 0, 0.7);
-        }
+    .btn-intro {
+      background: linear-gradient(135deg, #ff9800, #f44336);
+      color: #fff;
+      font-family: 'Luckiest Guy', cursive;
+      font-size: 1.4rem;
+      padding: 16px 32px;
+      border: 4px solid #fff;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+      letter-spacing: 1px;
+      transition: transform 0.2s, background 0.3s;
+      text-transform: uppercase;
+      text-align: center;
+      width: 100%;
+    }
 
-        /* --- SCREEN 2: VIDEO CONTAINER --- */
-        #video-container {
-            position: fixed;
-            inset: 0;
-            z-index: 40;
-            background: #000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.6s ease, visibility 0.6s ease;
-        }
+    .btn-intro:hover {
+      transform: scale(1.05);
+      background: linear-gradient(135deg, #ffb74d, #e53935);
+    }
 
-        #video-container.active {
-            opacity: 1;
-            visibility: visible;
-        }
+    .btn-skip {
+      background: rgba(0, 0, 0, 0.6);
+      color: #fff;
+      font-family: 'Fredoka', sans-serif;
+      font-size: 0.95rem;
+      padding: 8px 20px;
+      border: 2px solid rgba(255,255,255,0.6);
+      border-radius: 20px;
+      cursor: pointer;
+      display: none;
+    }
 
-        video {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-        }
+    /* --- MAIN CONTAINER --- */
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px 16px 60px 16px;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 1s ease, transform 1s ease;
+    }
 
-        .skip-btn {
-            position: absolute;
-            top: 25px;
-            right: 25px;
-            background: rgba(0, 0, 0, 0.6);
-            color: var(--text-light);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            padding: 10px 20px;
-            border-radius: 20px;
-            cursor: pointer;
-            backdrop-filter: blur(8px);
-            font-size: 0.85rem;
-            letter-spacing: 1px;
-            transition: all 0.3s ease;
-            z-index: 45;
-        }
+    .container.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
 
-        .skip-btn:hover {
-            background: var(--accent-orange);
-            border-color: var(--accent-orange);
-        }
+    /* --- HERO HEADER --- */
+    .hero {
+      text-align: center;
+      padding: 30px 20px;
+      background: linear-gradient(180deg, rgba(46,96,39,0.9) 0%, rgba(27,56,30,0.9) 100%);
+      border: 4px solid var(--accent-yellow);
+      border-radius: 24px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      margin-bottom: 24px;
+      position: relative;
+      overflow: hidden;
+    }
 
-        /* --- SCREEN 3: INVITATION CONTENT --- */
-        #invitation-container {
-            width: 100%;
-            max-width: 1100px;
-            padding: 40px 20px;
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.8s ease, transform 0.8s ease;
-        }
+    .hero::before {
+      content: "🌴 🦁 🦓 🦒 🦛 🌴";
+      font-size: 1.5rem;
+      display: block;
+      margin-bottom: 8px;
+    }
 
-        #invitation-container.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
+    .tagline {
+      font-family: 'Luckiest Guy', cursive;
+      color: var(--accent-yellow);
+      font-size: 1.2rem;
+      letter-spacing: 2px;
+      text-shadow: 2px 2px 0 #000;
+    }
 
-        /* Header */
-        .header {
-            text-align: center;
-            margin-bottom: 50px;
-        }
+    .hero h1 {
+      font-family: 'Luckiest Guy', cursive;
+      font-size: 3rem;
+      color: #fff;
+      text-shadow: 4px 4px 0 var(--accent-orange), 7px 7px 0 #000;
+      margin: 10px 0;
+      line-height: 1.1;
+    }
 
-        .sub-title {
-            color: var(--accent-orange);
-            font-size: 0.95rem;
-            letter-spacing: 4px;
-            text-transform: uppercase;
-            font-weight: 600;
-            margin-bottom: 8px;
-        }
+    .sub-headline {
+      font-size: 1.3rem;
+      color: var(--accent-yellow);
+      font-weight: 700;
+      text-shadow: 1px 1px 2px #000;
+    }
 
-        .main-title {
-            font-family: 'Shojumaru', cursive, sans-serif;
-            font-size: clamp(2rem, 5vw, 3.5rem);
-            color: #ffffff;
-            text-shadow: 0 0 15px rgba(255, 102, 0, 0.4);
-            letter-spacing: 2px;
-            margin-bottom: 12px;
-        }
+    /* --- EVENT DETAILS --- */
+    .details-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+      margin-bottom: 28px;
+    }
 
-        .hero-name {
-            color: var(--accent-orange);
-            display: inline-block;
-        }
+    .detail-card {
+      background: var(--card-bg);
+      padding: 20px;
+      border-radius: 18px;
+      border-left: 8px solid var(--accent-orange);
+      box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
 
-        .header-divider {
-            height: 3px;
-            width: 80px;
-            background: linear-gradient(90deg, transparent, var(--accent-orange), transparent);
-            margin: 0 auto;
-        }
+    .detail-card .icon {
+      font-size: 2.2rem;
+      background: rgba(255,152,0,0.15);
+      padding: 12px;
+      border-radius: 50%;
+    }
 
-        /* Cards Grid */
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 24px;
-        }
+    .detail-card h3 {
+      color: var(--jungle-dark);
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
 
-        .card {
-            background: var(--card-bg);
-            border: 1px solid var(--border-glow);
-            border-radius: 16px;
-            padding: 24px;
-            backdrop-filter: blur(12px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
+    .detail-card p {
+      color: #111;
+      font-weight: 700;
+      font-size: 1.15rem;
+    }
 
-        .card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background: linear-gradient(90deg, var(--accent-orange), var(--accent-gold));
-            opacity: 0.7;
-        }
+    /* --- 7 TREASURES / ENTOURAGE SECTION --- */
+    .section-title {
+      text-align: center;
+      font-family: 'Luckiest Guy', cursive;
+      font-size: 2.2rem;
+      color: var(--accent-yellow);
+      text-shadow: 3px 3px 0 #000;
+      margin: 36px 0 16px 0;
+    }
 
-        .card:hover {
-            transform: translateY(-6px);
-            border-color: var(--accent-orange);
-            box-shadow: 0 15px 35px rgba(255, 102, 0, 0.15);
-        }
+    .tabs-nav {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
 
-        .card-header {
-            display: flex;
-            align-items: flex-start;
-            gap: 12px;
-            margin-bottom: 20px;
-            padding-bottom: 12px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-        }
+    .tab-btn {
+      background: var(--jungle-mid);
+      color: #fff;
+      border: 2px solid var(--accent-yellow);
+      padding: 10px 18px;
+      border-radius: 25px;
+      font-family: 'Fredoka', sans-serif;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
 
-        .card-number {
-            font-size: 1.8rem;
-            font-weight: 800;
-            color: var(--accent-orange);
-            line-height: 1;
-        }
+    .tab-btn:hover, .tab-btn.active {
+      background: var(--accent-orange);
+      color: #fff;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(255,152,0,0.4);
+    }
 
-        .card-title-group {
-            display: flex;
-            flex-direction: column;
-        }
+    .category-card {
+      display: none;
+      background: var(--card-bg);
+      border-radius: 20px;
+      padding: 24px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+      border: 3px solid var(--accent-yellow);
+      animation: fadeIn 0.4s ease-in-out;
+    }
 
-        .card-title {
-            font-size: 1.1rem;
-            font-weight: 600;
-            letter-spacing: 1px;
-            color: #fff;
-            text-transform: uppercase;
-        }
+    .category-card.active {
+      display: block;
+    }
 
-        .card-subtitle {
-            font-size: 0.8rem;
-            color: var(--accent-gold);
-            font-weight: 400;
-            margin-top: 2px;
-        }
+    .category-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 2px dashed #ccc;
+      padding-bottom: 12px;
+      margin-bottom: 16px;
+    }
 
-        .names-list {
-            list-style: none;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
+    .category-header h2 {
+      font-family: 'Luckiest Guy', cursive;
+      color: var(--jungle-dark);
+      font-size: 1.6rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
 
-        .names-list li {
-            font-size: 0.95rem;
-            color: var(--text-light);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            opacity: 0.9;
-        }
+    .badge-size {
+      background: var(--accent-orange);
+      color: #fff;
+      font-size: 0.85rem;
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-weight: 700;
+    }
 
-        .names-list li::before {
-            content: '';
-            width: 6px;
-            height: 6px;
-            background-color: var(--accent-orange);
-            border-radius: 50%;
-            display: inline-block;
-        }
+    .names-list {
+      list-style: none;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 12px;
+    }
 
-        /* Animations */
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); opacity: 0.8; }
-            50% { transform: scale(1.08); opacity: 1; }
-        }
+    .names-list li {
+      background: rgba(46, 96, 39, 0.08);
+      padding: 12px 16px;
+      border-radius: 12px;
+      font-weight: 600;
+      color: #222;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border-left: 4px solid var(--jungle-light);
+    }
 
-        /* Responsive */
-        @media (max-width: 600px) {
-            #invitation-container {
-                padding: 30px 16px;
-            }
-            .grid {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+    .names-list li::before {
+      content: "🐾";
+      font-size: 0.9rem;
+    }
+
+    /* --- FOOTER --- */
+    .footer-note {
+      text-align: center;
+      margin-top: 40px;
+      padding: 20px;
+      color: #fff;
+      background: rgba(0,0,0,0.3);
+      border-radius: 16px;
+    }
+
+    .footer-note p {
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+
+    /* --- ANIMATIONS --- */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* --- RESPONSIVE --- */
+    @media (max-width: 600px) {
+      .hero h1 { font-size: 2.2rem; }
+      .section-title { font-size: 1.7rem; }
+      .tab-btn { font-size: 0.85rem; padding: 8px 14px; }
+      .names-list { grid-template-columns: 1fr; }
+    }
+  </style>
 </head>
 <body>
 
-    <!-- 1. START OVERLAY (Enables Audio Playback) -->
-    <div id="start-screen">
-        <svg class="symbol-icon" viewBox="0 0 100 100">
-            <path d="M50,10 A40,40 0 1,0 90,50 A40,40 0 0,0 50,10 Z M50,25 A25,25 0 1,1 25,50 A25,25 0 0,1 50,25 Z M50,35 A15,15 0 1,0 65,50 A15,15 0 0,0 50,35 Z" />
-        </svg>
-        <button class="start-btn" onclick="startExperience()">Open</button>
+  <!-- 1. VIDEO INTRO OVERLAY -->
+  <div id="video-overlay">
+    <video id="bg-video" playsinline preload="auto">
+      <source src="video.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+
+    <div class="video-controls">
+      <button id="start-btn" class="btn-intro">🎉 Tap to Open Party Invitation!</button>
+      <button id="skip-btn" class="btn-skip">Skip Intro ➔</button>
+    </div>
+  </div>
+
+  <!-- 2. MAIN INVITATION CONTENT -->
+  <div id="main-content" class="container">
+
+    <!-- Hero Header -->
+    <header class="hero">
+      <p class="tagline">WE LIKE TO MOVE IT, MOVE IT!</p>
+      <h1>ZANE ETHAN</h1>
+      <p class="sub-headline">IS TURNING 7 YEARS OLD!</p>
+    </header>
+
+    <!-- Details Grid -->
+    <section class="details-grid">
+      <div class="detail-card">
+        <span class="icon">📍</span>
+        <div>
+          <h3>VENUE</h3>
+          <p>McDonald's Pila, Laguna</p>
+        </div>
+      </div>
+
+      <div class="detail-card">
+        <span class="icon">⏰</span>
+        <div>
+          <h3>TIME</h3>
+          <p>10:30 AM – 12:00 NN</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Interactive 7s Section -->
+    <h2 class="section-title">🌴 THE 7 TREASURES 🌴</h2>
+
+    <!-- Navigation Tabs -->
+    <nav class="tabs-nav">
+      <button class="tab-btn active" onclick="switchTab('blue-bills')">💵 Blue Bills</button>
+      <button class="tab-btn" onclick="switchTab('polo-shirt')">👕 Polo/Shirt</button>
+      <button class="tab-btn" onclick="switchTab('shoes')">👟 Shoes</button>
+      <button class="tab-btn" onclick="switchTab('chocolate')">🍫 Chocolate</button>
+      <button class="tab-btn" onclick="switchTab('gifts')">🎁 Gifts</button>
+    </nav>
+
+    <!-- Tab 1: Blue Bills -->
+    <div id="blue-bills" class="category-card active">
+      <div class="category-header">
+        <h2>💵 7 Blue Bills</h2>
+      </div>
+      <ul class="names-list">
+        <li>Tita Babylyn</li>
+        <li>Mame Lenie</li>
+        <li>Mame Ochie</li>
+        <li>Ninang Stephanie</li>
+        <li>Ninong Mark Angelo</li>
+        <li>Tita Jhen</li>
+        <li>Tito Neil</li>
+      </ul>
     </div>
 
-    <!-- 2. VIDEO PLAYER -->
-    <div id="video-container">
-        <button class="skip-btn" onclick="showInvitation()">Skip Intro ➔</button>
-        <video id="intro-video" src="video.mp4" playsinline></video>
+    <!-- Tab 2: Polo/Shirt -->
+    <div id="polo-shirt" class="category-card">
+      <div class="category-header">
+        <h2>👕 7 Polo / Shirt</h2>
+        <span class="badge-size">Size: 14–16</span>
+      </div>
+      <ul class="names-list">
+        <li>Ninang Ellaine</li>
+        <li>Tita Joyce</li>
+        <li>Tita Whellen</li>
+        <li>Tita Michelle</li>
+        <li>Tita Jewel</li>
+        <li>Tita Ninay</li>
+        <li>Ate Kendra</li>
+      </ul>
     </div>
 
-    <!-- 3. MAIN INVITATION CONTENT -->
-    <div id="invitation-container">
-        <header class="header">
-            <div class="sub-title">You Are Invited To</div>
-            <h1 class="main-title">7th Birthday <span class="hero-name">Kuya ZANE</span></h1>
-            <div class="header-divider"></div>
-        </header>
-
-        <main class="grid">
-
-            <!-- Category 1: 7 BLUE BILLS -->
-            <div class="card">
-                <div class="card-header">
-                    <span class="card-number">7</span>
-                    <div class="card-title-group">
-                        <span class="card-title">Blue Bills</span>
-                    </div>
-                </div>
-                <ul class="names-list">
-                    <li>Tita Babylyn</li>
-                    <li>Lolo Fidel</li>
-                    <li>Lolo Odie</li>
-                    <li>Ninong Ryan</li>
-                    <li>Ninong Mark Angelo</li>
-                    <li>Tita Jhen</li>
-                    <li>Tito Neil</li>
-                </ul>
-            </div>
-
-            <!-- Category 2: 7 POLO/SHIRT -->
-            <div class="card">
-                <div class="card-header">
-                    <span class="card-number">7</span>
-                    <div class="card-title-group">
-                        <span class="card-title">Polo / Shirt</span>
-                        <span class="card-subtitle">Size: 14 - 16</span>
-                    </div>
-                </div>
-                <ul class="names-list">
-                    <li>Ninang Ellaine</li>
-                    <li>Tita Joyce</li>
-                    <li>Tita Whellen</li>
-                    <li>Tita Michelle</li>
-                    <li>Tita Jewel</li>
-                    <li>Ate Ninay</li>
-                    <li>Lola Elsa</li>
-                </ul>
-            </div>
-
-            <!-- Category 3: 7 SANDALS/SHOES -->
-            <div class="card">
-                <div class="card-header">
-                    <span class="card-number">7</span>
-                    <div class="card-title-group">
-                        <span class="card-title">Sandals / Shoes</span>
-                    </div>
-                </div>
-                <ul class="names-list">
-                    <li>Ninong Vincent</li>
-                    <li>Tita Dhalia</li>
-                    <li>Ate Claire</li>
-                    <li>Marcus</li>
-                    <li>Ninang Kakay</li>
-                    <li>Lola Coring</li>
-                    <li>Lola Jannet</li>
-                </ul>
-            </div>
-
-            <!-- Category 4: 7 CHOCOLATE -->
-            <div class="card">
-                <div class="card-header">
-                    <span class="card-number">7</span>
-                    <div class="card-title-group">
-                        <span class="card-title">Chocolates</span>
-                    </div>
-                </div>
-                <ul class="names-list">
-                    <li>Ate Sophia</li>
-                    <li>Jillian Therese</li>
-                    <li>Aullie Maritonie</li>
-                    <li>Kuya Lucas</li>
-                    <li>Kuya Stephen</li>
-                    <li>Kuya Xian Matthew</li>
-                    <li>Uanne</li>
-                </ul>
-            </div>
-
-        </main>
+    <!-- Tab 3: Sandals/Shoes -->
+    <div id="shoes" class="category-card">
+      <div class="category-header">
+        <h2>👟 7 Sandals / Shoes</h2>
+      </div>
+      <ul class="names-list">
+        <li>Ninong Vincent</li>
+        <li>Tita Dhalia</li>
+        <li>Ate Claire</li>
+        <li>Marcus</li>
+        <li>Ninang Kakay</li>
+        <li>Lola Coring</li>
+        <li>Ate Sophia</li>
+      </ul>
     </div>
 
-    <script>
-        const startScreen = document.getElementById('start-screen');
-        const videoContainer = document.getElementById('video-container');
-        const video = document.getElementById('intro-video');
-        const invitationContainer = document.getElementById('invitation-container');
+    <!-- Tab 4: Chocolate -->
+    <div id="chocolate" class="category-card">
+      <div class="category-header">
+        <h2>🍫 7 Chocolate</h2>
+      </div>
+      <ul class="names-list">
+        <li>Jillian Therese</li>
+        <li>Aullie Maritonie</li>
+        <li>Kuya Lucas</li>
+        <li>Kuya Stephen</li>
+        <li>Abriam Zion</li>
+        <li>Uanne</li>
+        <li>Kuya Shaun</li>
+      </ul>
+    </div>
 
-        function startExperience() {
-            // Hide initial start button screen
-            startScreen.style.opacity = '0';
-            startScreen.style.visibility = 'hidden';
+    <!-- Tab 5: Meaningful Gift -->
+    <div id="gifts" class="category-card">
+      <div class="category-header">
+        <h2>🎁 7 Meaningful Gift</h2>
+      </div>
+      <ul class="names-list">
+        <li>Lola Jannet</li>
+        <li>Lola Elsa</li>
+        <li>Lola Thalia</li>
+        <li>Lola Fely</li>
+        <li>Lola Porps</li>
+        <li>Lolo Ricky</li>
+        <li>Lola David</li>
+      </ul>
+    </div>
 
-            // Show video container and trigger playback with sound
-            videoContainer.classList.add('active');
-            video.currentTime = 0;
+    <!-- Footer Note -->
+    <footer class="footer-note">
+      <p>🎉 Come join our jungle adventure and celebrate with Zane Ethan! 🦁</p>
+    </footer>
 
-            video.play().catch(error => {
-                console.log("Autoplay was prevented:", error);
-                // Fallback directly to invitation if video fails to load/play
-                showInvitation();
-            });
-        }
+  </div>
 
-        // When video ends automatically
-        video.addEventListener('ended', function() {
-            showInvitation();
-        });
+  <script>
+    const startBtn = document.getElementById('start-btn');
+    const skipBtn = document.getElementById('skip-btn');
+    const videoOverlay = document.getElementById('video-overlay');
+    const bgVideo = document.getElementById('bg-video');
+    const mainContent = document.getElementById('main-content');
 
-        function showInvitation() {
-            // Pause video if skipping
-            video.pause();
+    // Handle initial user click (required by mobile browsers to play video with audio)
+    startBtn.addEventListener('click', () => {
+      startBtn.style.display = 'none';
+      skipBtn.style.display = 'inline-block';
 
-            // Fade out video
-            videoContainer.classList.remove('active');
+      bgVideo.play().catch(err => {
+        console.log("Video play error:", err);
+        revealInvitation(); // Fallback if video fails to load
+      });
+    });
 
-            // Fade in invitation after brief delay for smooth transition
-            setTimeout(() => {
-                invitationContainer.classList.add('visible');
-            }, 300);
-        }
-    </script>
+    // Automatically transition when video ends
+    bgVideo.addEventListener('ended', revealInvitation);
+
+    // Manual skip button
+    skipBtn.addEventListener('click', () => {
+      bgVideo.pause();
+      revealInvitation();
+    });
+
+    function revealInvitation() {
+      videoOverlay.style.opacity = '0';
+      videoOverlay.style.visibility = 'hidden';
+
+      setTimeout(() => {
+        videoOverlay.style.display = 'none';
+        mainContent.classList.add('visible');
+      }, 800);
+    }
+
+    // Interactive Tab Switching Logic
+    function switchTab(tabId) {
+      // Hide all category cards
+      document.querySelectorAll('.category-card').forEach(card => {
+        card.classList.remove('active');
+      });
+
+      // Deactivate all tab buttons
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('active');
+      });
+
+      // Show selected card & activate clicked tab
+      document.getElementById(tabId).classList.add('active');
+      event.currentTarget.classList.add('active');
+    }
+  </script>
 </body>
 </html>
