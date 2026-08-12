@@ -38,7 +38,6 @@
       overflow-x: hidden;
     }
 
-    /* --- INTRO VIDEO OVERLAY --- */
     #video-overlay {
       position: fixed;
       top: 0;
@@ -109,7 +108,6 @@
       display: none;
     }
 
-    /* --- MAIN CONTAINER --- */
     .container {
       max-width: 900px;
       margin: 0 auto;
@@ -124,7 +122,6 @@
       transform: translateY(0);
     }
 
-    /* --- HERO HEADER --- */
     .hero {
       text-align: center;
       padding: 30px 20px;
@@ -168,10 +165,9 @@
       text-shadow: 1px 1px 2px #000;
     }
 
-    /* --- EVENT DETAILS --- */
     .details-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
       gap: 16px;
       margin-bottom: 28px;
     }
@@ -207,7 +203,6 @@
       font-size: 1.15rem;
     }
 
-    /* --- 7 TREASURES / ENTOURAGE SECTION --- */
     .section-title {
       text-align: center;
       font-family: 'Luckiest Guy', cursive;
@@ -313,7 +308,6 @@
       font-size: 0.9rem;
     }
 
-    /* --- FOOTER --- */
     .footer-note {
       text-align: center;
       margin-top: 40px;
@@ -328,13 +322,11 @@
       font-weight: 600;
     }
 
-    /* --- ANIMATIONS --- */
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(10px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* --- RESPONSIVE --- */
     @media (max-width: 600px) {
       .hero h1 { font-size: 2.2rem; }
       .section-title { font-size: 1.7rem; }
@@ -345,7 +337,6 @@
 </head>
 <body>
 
-  <!-- 1. VIDEO INTRO OVERLAY -->
   <div id="video-overlay">
     <video id="bg-video" playsinline preload="auto">
       <source src="video.mp4" type="video/mp4">
@@ -358,7 +349,6 @@
     </div>
   </div>
 
-  <!-- 2. MAIN INVITATION CONTENT -->
   <div id="main-content" class="container">
 
     <!-- Hero Header -->
@@ -368,13 +358,12 @@
       <p class="sub-headline">IS TURNING 7 YEARS OLD!</p>
     </header>
 
-    <!-- Details Grid -->
     <section class="details-grid">
       <div class="detail-card">
-        <span class="icon">📍</span>
+        <span class="icon">📅</span>
         <div>
-          <h3>VENUE</h3>
-          <p>McDonald's Pila, Laguna</p>
+          <h3>DATE</h3>
+          <p>September 5, Saturday</p>
         </div>
       </div>
 
@@ -385,12 +374,18 @@
           <p>10:30 AM – 12:00 NN</p>
         </div>
       </div>
+
+      <div class="detail-card">
+        <span class="icon">📍</span>
+        <div>
+          <h3>VENUE</h3>
+          <p>McDonald's Pila, Laguna</p>
+        </div>
+      </div>
     </section>
 
-    <!-- Interactive 7s Section -->
     <h2 class="section-title">🌴 THE 7 TREASURES 🌴</h2>
 
-    <!-- Navigation Tabs -->
     <nav class="tabs-nav">
       <button class="tab-btn active" onclick="switchTab('blue-bills')">💵 Blue Bills</button>
       <button class="tab-btn" onclick="switchTab('polo-shirt')">👕 Polo/Shirt</button>
@@ -524,7 +519,6 @@
       }, 800);
     }
 
-    // Interactive Tab Switching Logic
     function switchTab(tabId) {
       // Hide all category cards
       document.querySelectorAll('.category-card').forEach(card => {
