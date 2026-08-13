@@ -503,7 +503,8 @@
 
   <!-- Video Overlay -->
   <div id="video-overlay">
-    <video id="bg-video" playsinline preload="auto">
+    <!-- Added 'muted' to the video tag to align with Safari iOS policies and audio constraints -->
+    <video id="bg-video" playsinline muted preload="auto">
       <source src="video.mp4" type="video/mp4">
       Your browser does not support the video tag.
     </video>
@@ -656,11 +657,21 @@
     const bgAudio = document.getElementById('bg-audio');
     const mainContent = document.getElementById('main-content');
 
-    // Handle initial user click to play video
+    // Handle initial user click to play video and unlock audio
     startBtn.addEventListener('click', () => {
       startBtn.style.display = 'none';
       skipBtn.style.display = 'inline-block';
 
+      // 1. Unlock the audio for Safari/Chrome during the user gesture
+      // We play it silently, then pause it instantly so the browser "trusts" it later.
+      bgAudio.volume = 0; 
+      bgAudio.play().then(() => {
+        bgAudio.pause();
+        bgAudio.currentTime = 0;
+        bgAudio.volume = 0.5; // Reset to your desired background volume
+      }).catch(err => console.log("Audio unlock error:", err));
+
+      // 2. Play the video
       bgVideo.play().catch(err => {
         console.log("Video play error:", err);
         revealInvitation(); // Fallback if video fails to load
@@ -681,8 +692,7 @@
       videoOverlay.style.opacity = '0';
       videoOverlay.style.visibility = 'hidden';
 
-      // Start playing background music
-      bgAudio.volume = 0.5; // Set a pleasant background volume
+      // Start playing background music (Now unlocked and trusted by the browser)
       bgAudio.play().catch(err => console.log("Audio play error:", err));
 
       setTimeout(() => {
