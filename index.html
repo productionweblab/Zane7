@@ -27,13 +27,18 @@
       --glass-border-glow: rgba(255, 255, 255, 0.5);
       --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
       --glass-blur: blur(16px) saturate(180%);
+      --fluid-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+      --fluid-smooth: cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      transition: background 0.4s ease, transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.4s ease, border-color 0.4s ease;
+      transition: background 0.4s var(--fluid-smooth), 
+                  transform 0.4s var(--fluid-spring), 
+                  box-shadow 0.4s var(--fluid-smooth), 
+                  border-color 0.4s var(--fluid-smooth);
     }
 
     body {
@@ -60,7 +65,7 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      transition: opacity 1s cubic-bezier(0.4, 0, 0.2, 1), visibility 1s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: opacity 0.8s var(--fluid-smooth), visibility 0.8s var(--fluid-smooth);
     }
 
     #bg-video {
@@ -137,8 +142,8 @@
       margin: 0 auto;
       padding: 30px 16px 60px 16px;
       opacity: 0;
-      transform: translateY(40px) scale(0.95);
-      transition: opacity 1.2s cubic-bezier(0.2, 0.8, 0.2, 1), transform 1.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+      transform: translateY(50px) scale(0.92);
+      transition: opacity 1s var(--fluid-smooth), transform 1s var(--fluid-spring);
     }
 
     .container.visible {
@@ -209,8 +214,8 @@
       font-family: inherit;
       outline: none;
       cursor: pointer;
-      background: linear-gradient(270deg, var(--glass-bg), rgba(255, 152, 0, 0.15), rgba(255, 235, 59, 0.1), var(--glass-bg));
-      background-size: 300% 300%;
+      background: linear-gradient(135deg, var(--glass-bg), rgba(255, 152, 0, 0.15), rgba(255, 235, 59, 0.1));
+      background-size: 200% 200%;
       backdrop-filter: var(--glass-blur);
       -webkit-backdrop-filter: var(--glass-blur);
       padding: 24px;
@@ -223,18 +228,34 @@
       gap: 18px;
       position: relative;
       overflow: hidden;
-      transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.5s ease, border-color 0.5s ease;
+      transition: transform 0.4s var(--fluid-spring), box-shadow 0.4s var(--fluid-smooth), border-color 0.4s ease;
+    }
+
+    /* Fluid Shimmer Effect on Hover */
+    .interactive-btn::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(60deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transform: rotate(30deg) translateY(-100%);
+      transition: transform 0.8s var(--fluid-smooth);
+    }
+
+    .interactive-btn:hover::after {
+      transform: rotate(30deg) translateY(100%);
     }
 
     .interactive-btn:hover {
       transform: translateY(-8px) scale(1.03);
-      box-shadow: 0 20px 40px rgba(0,0,0,0.5), inset 0 2px 5px rgba(255,255,255,0.4), 0 0 20px rgba(255, 152, 0, 0.3);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.5), inset 0 2px 5px rgba(255,255,255,0.4), 0 0 25px rgba(255, 152, 0, 0.4);
       border-left-color: var(--accent-yellow);
-      animation: fluidGlow 3s ease infinite;
     }
 
     .interactive-btn:active {
-      transform: translateY(-2px) scale(1.01);
+      transform: translateY(-2px) scale(0.97);
       box-shadow: 0 10px 20px rgba(0,0,0,0.4);
     }
 
@@ -249,12 +270,12 @@
       justify-content: center;
       align-items: center;
       box-shadow: 0 8px 16px rgba(0,0,0,0.2);
-      transition: transform 0.4s ease;
+      transition: transform 0.5s var(--fluid-spring), background 0.3s ease;
     }
 
     .interactive-btn:hover .icon {
-      transform: scale(1.1) rotate(5deg);
-      background: rgba(255, 152, 0, 0.4);
+      transform: scale(1.2) rotate(12deg);
+      background: rgba(255, 152, 0, 0.5);
     }
 
     .interactive-btn h3 {
@@ -308,12 +329,13 @@
       align-items: center;
       gap: 8px;
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      transition: all 0.4s var(--fluid-spring);
     }
 
     .tab-btn:hover {
       background: rgba(255, 152, 0, 0.3);
       color: #fff;
-      transform: translateY(-4px);
+      transform: translateY(-4px) scale(1.03);
       box-shadow: 0 10px 25px rgba(255, 152, 0, 0.3);
       border-color: rgba(255, 255, 255, 0.4);
     }
@@ -322,7 +344,7 @@
       background: linear-gradient(135deg, rgba(255, 152, 0, 0.85), rgba(244, 67, 54, 0.85));
       color: #fff;
       border-color: var(--glass-border-glow);
-      transform: translateY(-4px) scale(1.05);
+      transform: translateY(-4px) scale(1.08);
       box-shadow: 0 12px 30px rgba(255, 152, 0, 0.5), inset 0 2px 4px rgba(255, 255, 255, 0.5);
     }
 
@@ -336,11 +358,16 @@
       padding: 34px;
       box-shadow: var(--glass-shadow), inset 0 2px 5px rgba(255, 255, 255, 0.2);
       border: 1px solid var(--glass-border-yellow);
+      opacity: 0;
+      transform: translateY(20px) scale(0.98);
+      transition: opacity 0.5s var(--fluid-smooth), transform 0.5s var(--fluid-spring);
     }
 
     .category-card.active {
       display: block;
-      animation: cardFluidAppear 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      animation: cardFluidAppear 0.6s var(--fluid-spring) forwards;
     }
 
     .category-header {
@@ -398,15 +425,14 @@
       border-left: 4px solid var(--accent-yellow);
       box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
       text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
-
-      /* Fluid Entrance Setup */
       opacity: 0;
-      transform: translateY(20px);
+      transform: translateY(20px) scale(0.95);
+      transition: all 0.4s var(--fluid-spring);
     }
 
     /* Trigger fluid stagger animation when parent is active */
     .category-card.active .names-list li {
-      animation: slideInUp 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+      animation: slideInUp 0.6s var(--fluid-spring) forwards;
     }
 
     .category-card.active .names-list li:nth-child(1) { animation-delay: 0.05s; }
@@ -418,7 +444,7 @@
     .category-card.active .names-list li:nth-child(7) { animation-delay: 0.35s; }
 
     .names-list li:hover {
-      transform: translateX(8px) scale(1.03) !important;
+      transform: translateX(8px) scale(1.04) !important;
       background: rgba(255, 255, 255, 0.25);
       border-color: rgba(255, 255, 255, 0.6);
       box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
@@ -429,6 +455,11 @@
       content: "🐾";
       font-size: 1.1rem;
       filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.5));
+      transition: transform 0.3s var(--fluid-spring);
+    }
+
+    .names-list li:hover::before {
+      transform: rotate(20deg) scale(1.3);
     }
 
     /* Glass Footer */
@@ -453,34 +484,28 @@
 
     /* Keyframe Animations */
     @keyframes cardFluidAppear {
-      0% { opacity: 0; transform: translateY(30px) scale(0.97); }
+      0% { opacity: 0; transform: translateY(30px) scale(0.96); }
       100% { opacity: 1; transform: translateY(0) scale(1); }
     }
 
     @keyframes slideInUp {
-      0% { opacity: 0; transform: translateY(20px); }
-      100% { opacity: 1; transform: translateY(0); }
+      0% { opacity: 0; transform: translateY(25px) scale(0.9); }
+      100% { opacity: 1; transform: translateY(0) scale(1); }
     }
 
     @keyframes floatHero {
       0% { transform: translateY(0); }
-      100% { transform: translateY(-10px); }
+      100% { transform: translateY(-12px); }
     }
 
     @keyframes float {
       0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-6px); }
+      50% { transform: translateY(-8px); }
     }
 
     @keyframes pulseGlow {
       0% { box-shadow: 0 0 15px rgba(255, 152, 0, 0.5), inset 0 2px 5px rgba(255, 255, 255, 0.4); }
       100% { box-shadow: 0 0 35px rgba(255, 152, 0, 0.9), inset 0 2px 5px rgba(255, 255, 255, 0.8); }
-    }
-
-    @keyframes fluidGlow {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
     }
 
     @media (max-width: 600px) {
@@ -517,7 +542,8 @@
     </header>
 
     <section class="details-grid">
-      <button class="interactive-btn" onclick="alert('Added to Calendar! (Demo)')">
+      <!-- DATE BUTTON (Google Calendar Link) -->
+      <button class="interactive-btn" onclick="addToGoogleCalendar()">
         <span class="icon">📅</span>
         <div>
           <h3>DATE</h3>
@@ -525,7 +551,8 @@
         </div>
       </button>
 
-      <button class="interactive-btn" onclick="alert('Alarm set for 10:30 AM! (Demo)')">
+      <!-- TIME BUTTON (Generates / Downloads ICS File) -->
+      <button class="interactive-btn" onclick="downloadICSFile()">
         <span class="icon">⏰</span>
         <div>
           <h3>TIME</h3>
@@ -533,7 +560,8 @@
         </div>
       </button>
 
-      <button class="interactive-btn" onclick="alert('Opening map... (Demo)')">
+      <!-- VENUE BUTTON (Google Maps) -->
+      <button class="interactive-btn" onclick="openVenueMap()">
         <span class="icon">📍</span>
         <div>
           <h3>VENUE</h3>
@@ -676,30 +704,88 @@
       setTimeout(() => {
         videoOverlay.style.display = 'none';
         mainContent.classList.add('visible');
-      }, 1000);
+      }, 800);
     }
 
+    /* --- Interactive Button Logic --- */
+
+    // 1. VENUE BUTTON: Open Google Maps Location directly
+    function openVenueMap() {
+      const location = encodeURIComponent("McDonald's Pila Laguna");
+      window.open(`https://www.google.com/maps/search/?api=1&query=${location}`, '_blank');
+    }
+
+    // 2. DATE BUTTON: Opens Google Calendar event creation page
+    function addToGoogleCalendar() {
+      const title = encodeURIComponent("Zane Ethan's 7th Madagascar Birthday Party! 🦁");
+      const details = encodeURIComponent("We like to move it, move it! Join us to celebrate Zane Ethan turning 7 years old!");
+      const location = encodeURIComponent("McDonald's Pila, Laguna");
+      
+      // Saturday, September 5, 2026 (10:30 AM to 12:00 PM local time format YYYYMMDDTHHMMSS)
+      const startDate = "20260905T103000";
+      const endDate = "20260905T120000";
+
+      const gcalUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${startDate}/${endDate}&details=${details}&location=${location}`;
+      window.open(gcalUrl, '_blank');
+    }
+
+    // 3. TIME BUTTON: Downloads standard .ICS Calendar file (compatible with Apple iCal, Outlook, & Android native calendars)
+    function downloadICSFile() {
+      const icsData = 
+`BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Zane Ethan Birthday//Madagascar Invitation//EN
+BEGIN:VEVENT
+SUMMARY:Zane Ethan's 7th Madagascar Birthday Party! 🦁
+DESCRIPTION:We like to move it, move it! Join us to celebrate Zane Ethan turning 7 years old!
+LOCATION:McDonald's Pila, Laguna
+DTSTART:20260905T103000
+DTEND:20260905T120000
+END:VEVENT
+END:VCALENDAR`;
+
+      const blob = new Blob([icsData], { type: 'text/calendar;charset=utf-8' });
+      const link = document.createElement('a');
+      link.href = window.URL.createObjectURL(blob);
+      link.setAttribute('download', 'Zane_Ethan_7th_Birthday.ics');
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    /* --- Tab Switching Logic with Smooth Animations --- */
     function switchTab(evt, tabId) {
-      // Hide all category cards fluidly
-      document.querySelectorAll('.category-card').forEach(card => {
-        card.classList.remove('active');
-      });
-
-      // Deactivate all tab buttons
-      document.querySelectorAll('.tab-btn').forEach(btn => {
-        btn.classList.remove('active');
-      });
-
-      // Show selected card & activate clicked tab
+      const activeCard = document.querySelector('.category-card.active');
       const targetCard = document.getElementById(tabId);
 
-      // Small timeout to allow the DOM to reset the animation for staggering items
-      setTimeout(() => {
-        targetCard.classList.add('active');
-      }, 10);
+      if (activeCard === targetCard) return;
 
+      // Deactivate tabs
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
       if (evt && evt.currentTarget) {
         evt.currentTarget.classList.add('active');
+      }
+
+      // Smoothly hide current active card
+      if (activeCard) {
+        activeCard.style.opacity = '0';
+        activeCard.style.transform = 'translateY(15px) scale(0.97)';
+        
+        setTimeout(() => {
+          activeCard.classList.remove('active');
+          activeCard.style.display = 'none';
+
+          // Reveal target card
+          targetCard.style.display = 'block';
+          setTimeout(() => {
+            targetCard.classList.add('active');
+            targetCard.style.opacity = '';
+            targetCard.style.transform = '';
+          }, 20);
+        }, 200);
+      } else {
+        targetCard.style.display = 'block';
+        setTimeout(() => targetCard.classList.add('active'), 20);
       }
     }
   </script>
