@@ -647,8 +647,10 @@
 
   </div>
 
+  <iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/track/4bAFo6r2ODMDoqM5YHV2gM?utm_source=generator&theme=0&si=c2d8d3c354504704" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+
   <!-- Music Toggle Button -->
-  <button id="music-toggle" class="music-btn">🎵 Play Music</button>
+ 
 
   <script>
     const startBtn = document.getElementById('start-btn');
@@ -696,17 +698,7 @@
     }
     
     // Manual Music Toggle
-    musicBtn.addEventListener('click', () => {
-      if (isMusicPlaying) {
-        bgAudio.pause();
-        musicBtn.innerHTML = '🎵 Play Music';
-      } else {
-        bgAudio.volume = 0.5;
-        bgAudio.play().catch(err => console.log("Audio play error:", err));
-        musicBtn.innerHTML = '⏸️ Pause Music';
-      }
-      isMusicPlaying = !isMusicPlaying;
-    });
+    
 
     function switchTab(evt, tabId) {
       // Hide all category cards fluidly
