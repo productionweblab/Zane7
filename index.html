@@ -33,13 +33,11 @@
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      /* Smooth transitions applied to everything by default */
       transition: background 0.4s ease, transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.4s ease, border-color 0.4s ease;
     }
 
     body {
       font-family: 'Fredoka', sans-serif;
-      /* Background Image rendering bg.png */
       background: linear-gradient(135deg, rgba(27, 56, 30, 0.7), rgba(0, 0, 0, 0.8)),
                   url('bg.png') no-repeat center center fixed;
       background-size: cover;
@@ -47,27 +45,6 @@
       min-height: 100vh;
       overflow-x: hidden;
       position: relative;
-    }
-
-    /* Floating Glass Orbs for Background Effect */
-    .glass-orb {
-      position: fixed;
-      border-radius: 50%;
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.01));
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      z-index: -1;
-    }
-
-    .orb-1 { width: 300px; height: 300px; top: -50px; left: -100px; animation: floatOrb 12s infinite alternate ease-in-out; }
-    .orb-2 { width: 200px; height: 200px; bottom: 10%; right: -50px; animation: floatOrb 18s infinite alternate-reverse ease-in-out; }
-    .orb-3 { width: 150px; height: 150px; top: 40%; left: 10%; animation: floatOrb 14s infinite alternate ease-in-out; }
-
-    @keyframes floatOrb {
-      0% { transform: translate(0, 0) rotate(0deg); }
-      100% { transform: translate(40px, 40px) rotate(15deg); }
     }
 
     /* Fullscreen Video Overlay */
@@ -152,6 +129,33 @@
       background: rgba(255, 255, 255, 0.2);
       color: #fff;
       transform: scale(1.05);
+    }
+
+    /* Music Toggle Button */
+    .music-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: rgba(27, 56, 30, 0.85);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      color: #fff;
+      border: 1px solid var(--glass-border-yellow);
+      padding: 12px 24px;
+      border-radius: 30px;
+      font-family: 'Fredoka', sans-serif;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      z-index: 9998;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+      display: none; /* Hidden until video finishes */
+    }
+
+    .music-btn:hover {
+      background: rgba(255, 152, 0, 0.9);
+      transform: translateY(-3px);
+      border-color: #fff;
     }
 
     /* Main Container & Fluid Load-in */
@@ -421,7 +425,7 @@
     .category-card.active .names-list li:nth-child(7) { animation-delay: 0.35s; }
 
     .names-list li:hover {
-      transform: translateX(8px) scale(1.03) !important; /* Override entrance transform */
+      transform: translateX(8px) scale(1.03) !important;
       background: rgba(255, 255, 255, 0.25);
       border-color: rgba(255, 255, 255, 0.6);
       box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
@@ -454,7 +458,7 @@
       text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.9);
     }
 
-    /* Keyframe Animations for Fluid Motion */
+    /* Keyframe Animations */
     @keyframes cardFluidAppear {
       0% { opacity: 0; transform: translateY(30px) scale(0.97); }
       100% { opacity: 1; transform: translateY(0) scale(1); }
@@ -491,20 +495,14 @@
 </head>
 <body>
 
-  <!-- Floating Glass Orbs for background depth -->
-  <div class="glass-orb orb-1"></div>
-  <div class="glass-orb orb-2"></div>
-  <div class="glass-orb orb-3"></div>
-
-  <!-- Background Audio to play after intro -->
+  <!-- Background Audio -->
   <audio id="bg-audio" loop preload="auto">
     <source src="sound.mp3" type="audio/mpeg">
   </audio>
 
   <!-- Video Overlay -->
   <div id="video-overlay">
-    <!-- Added 'muted' to the video tag to align with Safari iOS policies and audio constraints -->
-    <video id="bg-video" playsinline muted preload="auto">
+    <video id="bg-video" playsinline preload="auto">
       <source src="video.mp4" type="video/mp4">
       Your browser does not support the video tag.
     </video>
@@ -649,6 +647,9 @@
 
   </div>
 
+  <!-- Music Toggle Button -->
+  <button id="music-toggle" class="music-btn">🎵 Play Music</button>
+
   <script>
     const startBtn = document.getElementById('start-btn');
     const skipBtn = document.getElementById('skip-btn');
@@ -656,22 +657,15 @@
     const bgVideo = document.getElementById('bg-video');
     const bgAudio = document.getElementById('bg-audio');
     const mainContent = document.getElementById('main-content');
+    const musicBtn = document.getElementById('music-toggle');
+    
+    let isMusicPlaying = false;
 
-    // Handle initial user click to play video and unlock audio
+    // Handle initial user click to play video
     startBtn.addEventListener('click', () => {
       startBtn.style.display = 'none';
       skipBtn.style.display = 'inline-block';
 
-      // 1. Unlock the audio for Safari/Chrome during the user gesture
-      // We play it silently, then pause it instantly so the browser "trusts" it later.
-      bgAudio.volume = 0; 
-      bgAudio.play().then(() => {
-        bgAudio.pause();
-        bgAudio.currentTime = 0;
-        bgAudio.volume = 0.5; // Reset to your desired background volume
-      }).catch(err => console.log("Audio unlock error:", err));
-
-      // 2. Play the video
       bgVideo.play().catch(err => {
         console.log("Video play error:", err);
         revealInvitation(); // Fallback if video fails to load
@@ -691,15 +685,28 @@
       // Fade out video overlay
       videoOverlay.style.opacity = '0';
       videoOverlay.style.visibility = 'hidden';
-
-      // Start playing background music (Now unlocked and trusted by the browser)
-      bgAudio.play().catch(err => console.log("Audio play error:", err));
+      
+      // Make music button visible
+      musicBtn.style.display = 'block';
 
       setTimeout(() => {
         videoOverlay.style.display = 'none';
         mainContent.classList.add('visible');
       }, 1000);
     }
+    
+    // Manual Music Toggle
+    musicBtn.addEventListener('click', () => {
+      if (isMusicPlaying) {
+        bgAudio.pause();
+        musicBtn.innerHTML = '🎵 Play Music';
+      } else {
+        bgAudio.volume = 0.5;
+        bgAudio.play().catch(err => console.log("Audio play error:", err));
+        musicBtn.innerHTML = '⏸️ Pause Music';
+      }
+      isMusicPlaying = !isMusicPlaying;
+    });
 
     function switchTab(evt, tabId) {
       // Hide all category cards fluidly
